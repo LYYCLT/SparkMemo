@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>SparkMemo · 情侣恋爱故事 AI 智能体</title>
+<link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="brand-left">
+    <div class="logo-badge">
+      <div class="sparkmemo-logo">💕</div>
+      <div>
+        <div class="brand-name">SparkMemo</div>
+        <div class="brand-sub">LOCAL COUPLE STORY AGENT</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="rtx-spark-badge">
+      <div class="nvidia-mark">
+        <div class="nvidia-dot"></div>
+        <div class="nvidia-dot"></div>
+        <div class="nvidia-dot"></div>
+      </div>
+      <span class="rtx-spark-text">RTX SPARK</span>
+      <span class="accel-label">本地推理加速</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="spec-bar">
+      <div class="spec-item"><span class="spec-dot"></span><span class="spec-value">128GB</span> 统一内存</div>
+      <div class="spec-item"><span class="spec-value">1 PFLOPS</span> FP4 算力</div>
+      <div class="spec-item"><span class="spec-value">5th Gen</span> Tensor Core</div>
+      <div class="spec-item"><span class="spec-value">OpenShell</span> 权限控制</div>
+    </div>
+    <button class="icon-btn" data-action="open-settings" title="设置 · 导出 · 清空">⚙️</button>
+  </div>
+</div>
+
+<!-- ============ MAIN ============ -->
+<div class="main">
+
+  <!-- LEFT PANEL -->
+  <div class="panel-left">
+    <div class="panel-header">
+      <div class="panel-title">📥 素材导入</div>
+      <div class="panel-desc">拖拽或上传你和Ta的共同回忆<br>图片 · 视频 · 文字 · 语音</div>
+    </div>
+
+    <div class="upload-zone" id="uploadZone">
+      <div class="upload-icon">☁️</div>
+      <div class="upload-text">拖拽素材到这里</div>
+      <div class="upload-hint">或点击选择 · 全部本地处理 · 不上传云端</div>
+      <button class="upload-btn" id="triggerUpload">选择素材</button>
+    </div>
+
+    <div class="media-tabs" id="mediaTabs">
+      <div class="media-tab active" data-type="all">全部 · 0</div>
+      <div class="media-tab" data-type="photo">📷 · 0</div>
+      <div class="media-tab" data-type="video">🎬 · 0</div>
+      <div class="media-tab" data-type="text">📝 · 0</div>
+      <div class="media-tab" data-type="voice">🎙️ · 0</div>
+    </div>
+
+    <div class="media-list" id="mediaList"></div>
+
+    <div class="nvidia-showcase" id="nvidiaShowcase">
+      <div class="ns-header">
+        <span class="ns-label">⚡ NVIDIA RTX SPARK</span>
+        <span class="ns-sub">本地 AI 工作站 · 产品展示</span>
+      </div>
+      <div class="ns-carousel" id="nvidiaCarousel"></div>
+    </div>
+
+    <div class="privacy-banner">
+      <span class="privacy-icon">🔒</span>
+      <span><b>NVIDIA OpenShell</b> · 数据本机存储 · 100% 隐私保护</span>
+    </div>
+  </div>
+
+  <!-- CENTER PANEL - TIMELINE -->
+  <div class="panel-center">
+    <div class="center-header">
+      <div class="center-title-wrap">
+        <div class="center-title">✨ 我们的故事时间线</div>
+        <div class="year-badge" id="yearBadge">—</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button id="genStoryBtn" class="story-btn">📖 生成完整故事书</button>
+        <button id="addNodeBtn" class="add-node-btn">+ 新节点</button>
+        <div class="count-badge">
+          <span class="count-num" id="highlightCount">0</span> 个故事亮点
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-area" id="timelineArea">
+      <div class="timeline-line"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL - AI OUTPUT -->
+  <div class="panel-right">
+    <div class="process-status">
+      <div class="process-title">⚡ RTX Spark 本地推理引擎</div>
+      <div class="process-steps" id="processSteps">
+        <div class="process-step" data-step="1">
+          <div class="step-icon done">✓</div>
+          <div class="step-text done">多模态素材加载完成</div>
+        </div>
+        <div class="process-step" data-step="2">
+          <div class="step-icon done">✓</div>
+          <div class="step-text done">人脸 / 场景 / 语音识别</div>
+        </div>
+        <div class="process-step" data-step="3">
+          <div class="step-icon active">◉</div>
+          <div class="step-text active">时间线语义关联中...</div>
+        </div>
+        <div class="process-step" data-step="4">
+          <div class="step-icon">✦</div>
+          <div class="step-text">情感亮点提炼</div>
+        </div>
+        <div class="process-step" data-step="5">
+          <div class="step-icon">✧</div>
+          <div class="step-text">专属 Skill 生成</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="output-area">
+      <div class="output-section">
+        <div class="output-label">📖 快速操作</div>
+        <button id="genAllBtn" class="action-btn" style="width:100%;">⚡ 为所有节点重新生成 AI 洞察</button>
+      </div>
+
+      <!-- Story Book Preview -->
+      <div class="output-section" id="storyBookSection">
+        <div class="output-label">📖 AI 生成的完整故事书</div>
+        <div class="story-book" id="storyBook">
+          <div style="color:#888;font-size:11px;text-align:center;padding:20px;">
+            点击上方「生成完整故事书」按钮<br>
+            所有时间线节点将被串联成一段温暖的完整故事
+          </div>
+        </div>
+        <button id="copyStoryBtn" class="action-btn" style="width:100%;margin-top:8px;display:none;">📋 复制故事书</button>
+      </div>
+
+      <!-- Skills -->
+      <div class="output-section">
+        <div class="output-label">✨ 专属 Skills <span style="font-size:9px;color:#666;margin-left:8px;">基于 NVIDIA Skills 开源框架</span></div>
+
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-icon pink">🎬</div>
+            <div class="skill-info">
+              <div class="skill-name">时间线故事生成</div>
+              <div class="skill-meta">分析所有素材 · 自动关联节点</div>
+            </div>
+          </div>
+          <div class="skill-desc">基于素材的时间、地点、情感关键词，自动将散碎回忆串联成故事时间线。</div>
+        </div>
+
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-icon sky">📝</div>
+            <div class="skill-info">
+              <div class="skill-name">AI 情感洞察</div>
+              <div class="skill-meta">多模态分析 · 本地模板引擎</div>
+            </div>
+          </div>
+          <div class="skill-desc">对每个时间线节点自动生成情感洞察：识别人脸/语音/文字中的情绪信号。</div>
+        </div>
+
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-icon peach">🗺️</div>
+            <div class="skill-info">
+              <div class="skill-name">数据备份 & 迁移</div>
+              <div class="skill-meta">一键 JSON 导出 / 导入</div>
+            </div>
+          </div>
+          <div class="skill-desc">所有素材、时间线、AI 洞察打包成单个 JSON 文件，可跨设备迁移或长期存档。</div>
+        </div>
+
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-icon lavender">⚙️</div>
+            <div class="skill-info">
+              <div class="skill-name">LLM 云端接入</div>
+              <div class="skill-meta">可选 · 设置中配置 API Key</div>
+            </div>
+          </div>
+          <div class="skill-desc">默认使用本地模板引擎（零成本），也可配置 LLM API 获取更灵动的 AI 故事片段。</div>
+        </div>
+
+        <div class="skill-card fade-in highlight-skill">
+          <div class="skill-header">
+            <div class="skill-icon pink">🎞️</div>
+            <div class="skill-info">
+              <div class="skill-name">本地隐私保护</div>
+              <div class="skill-meta">NVIDIA OpenShell · 100% 不上传</div>
+            </div>
+          </div>
+          <div class="skill-desc">所有照片、视频、聊天记录、私密文字全部在本机完成处理。依托英伟达 RTX Spark 的 128GB 统一内存和 1 PFLOPS AI 算力，数据永远不离开你的电脑。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="storage.js?v=4"></script>
+<script src="ai.js?v=4"></script>
+<script src="app.js?v=4"></script>
+
+</body>
+</html>
